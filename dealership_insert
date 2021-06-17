@@ -1,0 +1,90 @@
+INSERT INTO mechanic(
+	mechanic_id,
+	first_name,
+	last_name
+)VALUES(
+	1,
+	'Ruth',
+	'Poundcake'
+);
+
+INSERT INTO salesperson(
+	salerperson_id,
+	first_name,
+	last_name
+)VALUES(
+	1,
+	'Todd',
+	'Swift'
+);
+
+INSERT INTO service(
+	service_id,
+	part_id,
+	repair_cost,
+	mechanic_id
+)VALUES(
+	1,
+	'muffler',
+	179.99,
+	1
+);
+
+INSERT INTO customer(
+	customer_id,
+	first_name,
+	last_name,
+	address,
+	billing_info,
+	service_id
+)VALUES(
+	1,
+	'Don',
+	'Midnight',
+	'321 Cool Guy Dr.',
+	'2344-1414-2350-1998 08/25 677',
+	1
+);
+	
+CREATE OR REPLACE FUNCTION add_invoice(
+	_invoice_id INTEGER, 
+	_date_ TIMESTAMP,
+	_customer_id INTEGER
+)
+RETURNS void
+AS $MAIN$
+BEGIN
+	INSERT INTO invoice(invoice_id,date_,customer_id)
+	VALUES(_invoice_id,_date_,_customer_id);
+END
+$MAIN$
+LANGUAGE plpgsql;
+
+SELECT add_invoice(1,NOW()::timestamp,1);
+
+SELECT *
+FROM invoice;
+
+CREATE OR REPLACE FUNCTION add_car(
+	_vin_number VARCHAR,
+	_make VARCHAR,
+	_model VARCHAR,
+	_year_ INTEGER,
+	_color VARCHAR,
+	_price NUMERIC,
+	_salesperson_id INTEGER,
+	_invoice_id INTEGER
+)
+RETURNS void
+AS $MAIN$
+BEGIN
+	INSERT INTO car(vin_number,make,model,year_,color,price,salesperson_id,invoice_id)
+	VALUES(_vin_number,_make,_model,_year_,_color,_price,_salesperson_id,_invoice_id);
+END
+$MAIN$
+LANGUAGE plpgsql;
+
+SELECT add_car('234nfk23','Hyundai','JazzStyle',1981,'purple',1399.99,1,1);
+
+SELECT *
+FROM car;
